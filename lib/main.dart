@@ -25,6 +25,21 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> checkBoxes = [];
+
+  List<String> questions = [
+    "The letter H is between letters G and J on a keyboard",
+    "Camels have three sets of eyelashes",
+    "New York is nicknamed 'The Big Orange'",
+    "Your hand has a built in snuff box",
+    "The moon is just 50 percent of the mass of Earth.",
+    "Apes cant laugh.",
+  ];
+
+  List<bool> answers = [true, false, false, true, false, false];
+
+  int questionNumber = 0;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,7 +52,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[questionNumber % questions.length],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -50,9 +65,10 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  textStyle: TextStyle(color: Colors.white)),
               child: Text(
                 'True',
                 style: TextStyle(
@@ -61,7 +77,22 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked true.
+                bool answer = answers[questionNumber % questions.length];
+
+                setState(() {
+                  if (answer) {
+                    checkBoxes.add(Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ));
+                  } else {
+                    checkBoxes.add(Icon(
+                      Icons.check,
+                      color: Colors.red,
+                    ));
+                  }
+                  questionNumber++;
+                });
               },
             ),
           ),
@@ -69,8 +100,10 @@ class _QuizPageState extends State<QuizPage> {
         Expanded(
           child: Padding(
             padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.red,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  textStyle: const TextStyle(fontSize: 20),
+                  backgroundColor: Colors.red),
               child: Text(
                 'False',
                 style: TextStyle(
@@ -79,12 +112,29 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                //The user picked false.
+                bool answer = answers[questionNumber % questions.length];
+                setState(() {
+                  if (!answer) {
+                    checkBoxes.add(Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ));
+                  } else {
+                    checkBoxes.add(Icon(
+                      Icons.check,
+                      color: Colors.red,
+                    ));
+                  }
+
+                  questionNumber++;
+                });
               },
             ),
           ),
         ),
-        //TODO: Add a Row here as your score keeper
+        Row(
+          children: checkBoxes,
+        )
       ],
     );
   }
