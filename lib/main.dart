@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:quizzler/quiz_bank.dart';
 
 void main() => runApp(Quizzler());
+
+QuizBank quizBank = new QuizBank();
 
 class Quizzler extends StatelessWidget {
   @override
@@ -27,19 +30,6 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   List<Icon> checkBoxes = [];
 
-  List<String> questions = [
-    "The letter H is between letters G and J on a keyboard",
-    "Camels have three sets of eyelashes",
-    "New York is nicknamed 'The Big Orange'",
-    "Your hand has a built in snuff box",
-    "The moon is just 50 percent of the mass of Earth.",
-    "Apes cant laugh.",
-  ];
-
-  List<bool> answers = [true, false, false, true, false, false];
-
-  int questionNumber = 0;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -52,7 +42,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                questions[questionNumber % questions.length],
+                quizBank.getQuestions().ques,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -77,7 +67,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool answer = answers[questionNumber % questions.length];
+                bool answer = quizBank.getQuestions().answer;
 
                 setState(() {
                   if (answer) {
@@ -91,7 +81,7 @@ class _QuizPageState extends State<QuizPage> {
                       color: Colors.red,
                     ));
                   }
-                  questionNumber++;
+                  quizBank.nextQuestion();
                 });
               },
             ),
@@ -112,7 +102,8 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool answer = answers[questionNumber % questions.length];
+                bool answer = quizBank.getQuestions().answer;
+
                 setState(() {
                   if (!answer) {
                     checkBoxes.add(Icon(
@@ -126,7 +117,7 @@ class _QuizPageState extends State<QuizPage> {
                     ));
                   }
 
-                  questionNumber++;
+                  quizBank.nextQuestion();
                 });
               },
             ),
