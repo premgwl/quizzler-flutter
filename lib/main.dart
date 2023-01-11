@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_bank.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() => runApp(Quizzler());
 
@@ -29,6 +30,38 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   List<Icon> checkBoxes = [];
+
+  void checkPickedAnswer(bool userPickedAnswer) {
+    bool answer = quizBank.getQuestions().answer;
+
+    if (answer == userPickedAnswer) {
+      checkBoxes.add(Icon(
+        Icons.check,
+        color: Colors.green,
+      ));
+    } else {
+      checkBoxes.add(Icon(
+        Icons.close,
+        color: Colors.red,
+      ));
+    }
+
+    if (quizBank.isQuizOver()) {
+      Alert(
+        context: context,
+        title: "Quiz Over!.",
+        desc: "Resetting question bank.",
+      ).show();
+
+      quizBank.resetQuiz();
+      checkBoxes = [];
+      return;
+    }
+
+    setState(() {
+      quizBank.nextQuestion();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,22 +100,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool answer = quizBank.getQuestions().answer;
-
-                setState(() {
-                  if (answer) {
-                    checkBoxes.add(Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ));
-                  } else {
-                    checkBoxes.add(Icon(
-                      Icons.check,
-                      color: Colors.red,
-                    ));
-                  }
-                  quizBank.nextQuestion();
-                });
+                checkPickedAnswer(true);
               },
             ),
           ),
@@ -102,23 +120,7 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
               onPressed: () {
-                bool answer = quizBank.getQuestions().answer;
-
-                setState(() {
-                  if (!answer) {
-                    checkBoxes.add(Icon(
-                      Icons.check,
-                      color: Colors.green,
-                    ));
-                  } else {
-                    checkBoxes.add(Icon(
-                      Icons.check,
-                      color: Colors.red,
-                    ));
-                  }
-
-                  quizBank.nextQuestion();
-                });
+                checkPickedAnswer(false);
               },
             ),
           ),

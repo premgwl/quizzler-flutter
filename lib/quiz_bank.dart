@@ -6,9 +6,9 @@ class QuizBank {
   List<Question> _questions = [
     Question("The letter H is between letters G and J on a keyboard", true),
     Question("Camels have three sets of eyelashes", true),
-    Question("New York is nicknamed 'The Big Orange'", true),
-    Question("Your hand has a built in snuff box", true),
-    Question("The moon is just 50 percent of the mass of Earth.", true),
+    Question("New York is nicknamed 'The Big Orange'", false),
+    Question("Your hand has a built in snuff box", false),
+    Question("The moon is just 50 percent of the mass of Earth.", false),
   ];
 
   Question getQuestions() {
@@ -19,5 +19,17 @@ class QuizBank {
     if (_questionNumber + 1 < _questions.length) {
       _questionNumber++;
     }
+  }
+
+  bool isQuizOver() {
+    if (_questionNumber + 1 == _questions.length) {
+      return true;
+    }
+
+    return false;
+  }
+
+  void resetQuiz() {
+    _questionNumber = 0;
   }
 }
