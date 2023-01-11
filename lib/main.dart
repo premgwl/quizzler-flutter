@@ -53,8 +53,11 @@ class _QuizPageState extends State<QuizPage> {
         desc: "Resetting question bank.",
       ).show();
 
-      quizBank.resetQuiz();
-      checkBoxes = [];
+      setState(() {
+        quizBank.resetQuiz();
+        checkBoxes = [];
+      });
+
       return;
     }
 
